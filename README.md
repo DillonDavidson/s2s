@@ -2,7 +2,7 @@
 
 *A tool for generating Anki decks from subtitle and video files*
 
-`s2s` is a lightweight command-line tool that slices up video + subtitle pairs into audio clips and subtitle lines, then generates a ready-to-import Anki deck (TSV).
+`s2s` is a lightweight command-line tool that slices up video + subtitle pairs into audio clips and subtitle lines, then generates a ready-to-import Anki deck (TSV). I have only tested this on Linux for now.
 
 ---
 
@@ -71,4 +71,4 @@ Contributions are welcome! Please open an issue or pull request.
 
 ## License
 
-s2s is licensed under the GNU GPL Version 3 license. [See LICENSE for more information](https://github.com/DillonDavidson/s2s/blob/main/LICENSE)
+s2s is licensed under the GNU GPL Version 3 license. [See LICENSE for more information.](https://github.com/DillonDavidson/s2s/blob/main/LICENSE)
