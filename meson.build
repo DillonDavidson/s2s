@@ -3,7 +3,6 @@ project('s2s', 'cpp',
   default_options: [
     'cpp_std=c++20',
     'warning_level=3',
-    'b_compile_commands=true',
   ]
 )
 
