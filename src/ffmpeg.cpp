@@ -10,15 +10,12 @@
 #include "constants.hpp"
 #include "utils.hpp"
 
-namespace ffmpeg
+namespace s2s
 {
-
-using namespace constants;
-using namespace utils;
 
 static std::vector<std::string> commands;
 
-void CreateAnkiDeck(const cli::Cli &cli, const std::vector<Subtitle> &subtitles)
+void CreateAnkiDeck(const Cli &cli, const std::vector<Subtitle> &subtitles)
 {
 	if (std::filesystem::exists(DEFAULT_OUTPUT_FILE))
 	{
@@ -30,26 +27,41 @@ void CreateAnkiDeck(const cli::Cli &cli, const std::vector<Subtitle> &subtitles)
 	{
 		std::cout << "Warning: Output directory does not exist. Creating '" << cli.output_directory.c_str()
 		          << "'.\n";
-		std::filesystem::create_directories(cli.output_directory);
+		if (cli.dry_run)
+		{
+			std::cout << "mkdir " << cli.output_directory << "\n";
+		}
+		else
+		{
+			std::filesystem::create_directories(cli.output_directory);
+		}
 	}
 
-	assert(std::filesystem::exists(cli.output_directory));
+	assert(std::filesystem::exists(cli.output_directory) || cli.dry_run);
 
 	std::filesystem::path media_path = cli.output_directory / (cli.deck_name + MEDIA.data());
 	if (std::filesystem::exists(media_path))
 	{
-		std::cout << "Error: Media path: '" << media_path.c_str()
-		          << "' already exists. Delete it and try again.\n";
+		std::cout << "Error: Media path: '" << media_path << "' already exists. Delete it and try again.\n";
 		exit(1);
 	}
-	std::filesystem::create_directory(media_path);
-	assert(std::filesystem::exists(media_path));
 
-	std::ofstream tsv_file(cli.output_directory / (cli.deck_name + TSV.data()));
-	assert(tsv_file.is_open());
+	std::ofstream tsv_file;
+	if (!cli.dry_run)
+	{
+		std::filesystem::create_directory(media_path);
+		assert(std::filesystem::exists(media_path));
+		tsv_file.open(cli.output_directory / (cli.deck_name + TSV.data()));
+		assert(tsv_file.is_open());
+	}
+	else
+	{
+		std::cout << "mkdir " << media_path << "\n";
+		std::cout << "touch " << cli.output_directory / (cli.deck_name + TSV.data()) << "\n";
+	}
 
 	MKVtoOGG(cli, DEFAULT_OUTPUT_FILE);
-	assert(std::filesystem::exists(DEFAULT_OUTPUT_FILE));
+	assert(std::filesystem::exists(DEFAULT_OUTPUT_FILE) || cli.dry_run);
 
 	size_t sequence_number = 1;
 	for (const auto &s : subtitles)
@@ -69,16 +81,28 @@ void CreateAnkiDeck(const cli::Cli &cli, const std::vector<Subtitle> &subtitles)
 
 	tsv_file.close();
 
-	RunInParallel(cli.threads);
+	if (cli.dry_run)
+	{
+		for (const auto &cmd : commands)
+		{
+			std::cout << cmd << "\n";
+		}
 
-	std::system((RM.data() + DEFAULT_OUTPUT_FILE.string()).c_str());
+		std::cout << (RM.data() + DEFAULT_OUTPUT_FILE.string()) << "\n";
+	}
+	else
+	{
+		RunInParallel(cli.threads);
+		std::system((RM.data() + DEFAULT_OUTPUT_FILE.string()).c_str());
+	}
 }
 
-void MKVtoOGG(const cli::Cli &cli, const std::filesystem::path &output_file)
+void MKVtoOGG(const Cli &cli, const std::filesystem::path &output_file)
 {
 	std::ostringstream command;
 
 	command << FFMPEG;
+
 	if (cli.be_quiet)
 	{
 		command << QUIET;
@@ -92,10 +116,17 @@ void MKVtoOGG(const cli::Cli &cli, const std::filesystem::path &output_file)
 		command << SHELL_BE_QUIET;
 	}
 
-	std::system(command.str().c_str());
+	if (cli.dry_run)
+	{
+		std::cout << command.str() << "\n";
+	}
+	else
+	{
+		std::system(command.str().c_str());
+	}
 }
 
-void GenerateAudioClip(const cli::Cli &cli, const Subtitle &s, const std::filesystem::path &media_path, size_t seq)
+void GenerateAudioClip(const Cli &cli, const Subtitle &s, const std::filesystem::path &media_path, size_t seq)
 {
 	// ffmpeg -i audio.ogg -ss START -to END -c copy
 	// <deck_name>_<sequence_number>.ogg
@@ -118,12 +149,13 @@ void GenerateAudioClip(const cli::Cli &cli, const Subtitle &s, const std::filesy
 	commands.push_back(command.str());
 }
 
-void GenerateImage(const cli::Cli &cli, const Subtitle &s, const std::filesystem::path &media_path, size_t seq)
+void GenerateImage(const Cli &cli, const Subtitle &s, const std::filesystem::path &media_path, size_t seq)
 {
 	// ffmpeg -ss 0:0:3.227 -i 01.mkv -vframes 1 01.webp
 	std::ostringstream command;
 
 	command << FFMPEG;
+
 	if (cli.be_quiet)
 	{
 		command << QUIET;
@@ -140,8 +172,13 @@ void GenerateImage(const cli::Cli &cli, const Subtitle &s, const std::filesystem
 	commands.push_back(command.str());
 }
 
-void WriteToOutputTSV(const cli::Cli &cli, const Subtitle &s, std::ofstream &tsv_file, size_t seq)
+void WriteToOutputTSV(const Cli &cli, const Subtitle &s, std::ofstream &tsv_file, size_t seq)
 {
+	if (cli.dry_run)
+	{
+		return;
+	}
+
 	std::string format_seq = FormatThreeDigits(seq);
 	tsv_file << cli.deck_name << "\t";
 	tsv_file << format_seq << "\t";
@@ -185,4 +222,4 @@ void RunInParallel(size_t num_threads)
 	}
 }
 
-} // namespace ffmpeg
+} // namespace s2s

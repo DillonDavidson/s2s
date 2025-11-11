@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-namespace utils
+namespace s2s
 {
 
 std::string Quote(const std::string &s)
@@ -28,4 +28,4 @@ std::string BuildOutputPath(const std::string &media, const std::string &deck, i
 	return Quote(media + "/" + deck + "_" + FormatThreeDigits(seq) + ext);
 }
 
-} // namespace utils
+} // namespace s2s

@@ -5,9 +5,9 @@
 
 #include "subtitle.hpp"
 
-namespace srt
+namespace s2s
 {
 
-std::vector<subtitle::Subtitle> ParseSRTFile(const std::filesystem::path &path);
+std::vector<Subtitle> ParseSRTFile(const std::filesystem::path &path);
 
-} // namespace srt
+} // namespace s2s

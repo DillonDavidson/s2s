@@ -7,11 +7,8 @@
 #include "constants.hpp"
 #include "subtitle.hpp"
 
-namespace srt
+namespace s2s
 {
-
-using constants::MY_BEST_GUESS;
-using subtitle::Subtitle;
 
 std::vector<Subtitle> ParseSRTFile(const std::filesystem::path &path)
 {
@@ -71,4 +68,4 @@ std::vector<Subtitle> ParseSRTFile(const std::filesystem::path &path)
 	return subs;
 }
 
-} // namespace srt
+} // namespace s2s

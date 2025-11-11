@@ -2,23 +2,22 @@
 
 *A tool for generating Anki decks from subtitle and video files*
 
-`s2s` is a lightweight command-line tool that slices up video + subtitle pairs into audio clips and subtitle lines, then generates a ready-to-import Anki deck (TSV). I have only tested this on Linux for now.
+`s2s` is a lightweight command-line tool that slices up video + subtitle pairs into audio clips and subtitle lines, then generates a TSV file for importing as an Anki deck.
 
 ---
 
 ##  Features
-- C++20 implementation (with parallelization)
-- Extracts audio clips aligned with subtitle timings
+- Extract audio clips aligned with subtitle timings
 - Generates TSV files ready for Anki import
-- Simple CLI with minimal dependencies (just )
-- Currently supports: SRT subtitles, MKV video, OGG audio
+- Simple CLI with minimal dependencies
+- Currently supports: SRT subtitles, MKV video, OGG audio, with plans to expand
 
 ---
 
 ## Requirements
 
 - [FFmpeg](https://ffmpeg.org/) must be installed and available in your PATH
-- A C++20-capable compiler
+- A C++ compiler (I like Clang++)
 - Meson + Ninja build system
 
 ---
@@ -52,20 +51,8 @@ Options:
 ## Example
 
 ```bash
-./build/s2s -s ~/Videos/MyVideo.srt -v ~/Videos/MyVideo.mkv -n My_Video_Deck -o MyVideoDir -t 12
+./build/s2s -s sub.srt -v vid.mkv -n my_deck -o ./my_vids/
 ```
-
----
-
-## Acknowledgements
-
-- [subs2srs](https://sourceforge.net/projects/subs2srs/) - inspiration for this project
-- [btop](https://github.com/aristocratos/btop) - clean example for handling command-line arguments
-
----
-
-## Contributing
-Contributions are welcome! Please open an issue or pull request.
 
 ---
 
