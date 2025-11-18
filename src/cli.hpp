@@ -12,8 +12,8 @@ constexpr std::string_view USAGE = "Options:\n"
                                    "    -o, --output <directory>  Directory to place generated files\n"
                                    "    -n, --name                Name of generated Anki deck\n"
                                    "    -t, --threads <num>       Number of threads to use (default: 1)\n"
-                                   "    --dry-run                 Show what commands will run without running them"
-                                   "    --verbose                 Show detailed FFmpeg output and other debug info"
+                                   "    --dry-run                 Show what commands will run without running them\n"
+                                   "    --verbose                 Show detailed FFmpeg output and other debug info\n"
                                    "    -h, --help                Show this help message and exit\n";
 
 struct Cli
