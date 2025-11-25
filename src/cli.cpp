@@ -15,6 +15,13 @@ Cli Parse(int argc, char *argv[])
 
 	Cli cli{};
 
+	if (argc == 1)
+	{
+		Usage();
+		cli.error_code = 1;
+		return cli;
+	}
+
 	cli.be_quiet = true;
 	cli.dry_run = false;
 	cli.threads = 1;
