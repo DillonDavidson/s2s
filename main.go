@@ -1,49 +1,20 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"os"
+	"log"
 )
 
-type Cli struct {
-	subtitleFile    string // Path to subtitle file in target language
-	videoFile       string // Path to video file
-	outputDirectory string // Path to subtitle file in target language
-	deckName        string // Name of generated Anki deck
-	verbose         bool   // Silence output of FFmpeg
-	dryRun          bool   // Print commands that would be executed
-	threads         int    // Number of threads to use
-	errorCode       int    // Error code, if any
-}
-
 func main() {
-	flag.Usage = func() {
-		f := flag.CommandLine.Output()
-		fmt.Fprintln(f, "s2s - Subtitles 2 SRS")
-		fmt.Fprintln(f, "")
-		fmt.Fprintf(f, "Usage:  %s [OPTIONS]\n\n", os.Args[0])
-		fmt.Fprintln(f, "")
-		fmt.Fprintln(f, "Options:")
-		flag.PrintDefaults()
+	cli, err := Parse()
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	var cli Cli
+	subtitles := ParseSRTFile(cli.subtitleFile)
 
-	flag.BoolVar(&cli.verbose, "verbose", false, "show detailed FFmpeg output and other debug info")
-	flag.BoolVar(&cli.dryRun, "dry-run", false, "show what commands will run without running them")
-	flag.IntVar(&cli.threads, "threads", 1, "number of threads to use")
-	flag.StringVar(&cli.subtitleFile, "subtitle", "", "path to subtitle file in target language")
-	flag.StringVar(&cli.videoFile, "video", "", "path to video file used for audio/video clips and images")
-	flag.StringVar(&cli.outputDirectory, "output", "", "directory to place generated files")
-	flag.StringVar(&cli.deckName, "name", "", "name of generated Anki deck")
-
-	showHelp := flag.Bool("help", false, "show help")
-
-	flag.Parse()
-
-	if *showHelp || len(os.Args) == 1 {
-		flag.Usage()
-		return
-	}
+	fmt.Println("Subtitle File:    " + cli.subtitleFile)
+	fmt.Println("Video File:       " + cli.videoFile)
+	fmt.Println("Deck Name:        " + cli.deckName)
+	fmt.Println("Output Directory: " + cli.outputDirectory)
 }
