@@ -10,12 +10,9 @@
 #include "constants.hpp"
 #include "utils.hpp"
 
-namespace s2s
-{
-
 static std::vector<std::string> commands;
 
-void CreateAnkiDeck(const Cli &cli, const std::vector<Subtitle> &subtitles)
+void CreateAnkiDeck(const Cli& cli, const std::vector<Subtitle>& subtitles)
 {
 	if (std::filesystem::exists(DEFAULT_OUTPUT_FILE))
 	{
@@ -64,7 +61,7 @@ void CreateAnkiDeck(const Cli &cli, const std::vector<Subtitle> &subtitles)
 	assert(std::filesystem::exists(DEFAULT_OUTPUT_FILE) || cli.dry_run);
 
 	size_t sequence_number = 1;
-	for (const auto &s : subtitles)
+	for (const auto& s : subtitles)
 	{
 		// ffmpeg -i audio.ogg -ss START -to END -c copy
 		// <deck_name>_<sequence_number>.ogg
@@ -83,7 +80,7 @@ void CreateAnkiDeck(const Cli &cli, const std::vector<Subtitle> &subtitles)
 
 	if (cli.dry_run)
 	{
-		for (const auto &cmd : commands)
+		for (const auto& cmd : commands)
 		{
 			std::cout << cmd << "\n";
 		}
@@ -97,7 +94,7 @@ void CreateAnkiDeck(const Cli &cli, const std::vector<Subtitle> &subtitles)
 	}
 }
 
-void MKVtoOGG(const Cli &cli, const std::filesystem::path &output_file)
+void MKVtoOGG(const Cli& cli, const std::filesystem::path& output_file)
 {
 	std::ostringstream command;
 
@@ -126,7 +123,7 @@ void MKVtoOGG(const Cli &cli, const std::filesystem::path &output_file)
 	}
 }
 
-void GenerateAudioClip(const Cli &cli, const Subtitle &s, const std::filesystem::path &media_path, size_t seq)
+void GenerateAudioClip(const Cli& cli, const Subtitle& s, const std::filesystem::path& media_path, size_t seq)
 {
 	// ffmpeg -i audio.ogg -ss START -to END -c copy
 	// <deck_name>_<sequence_number>.ogg
@@ -149,7 +146,7 @@ void GenerateAudioClip(const Cli &cli, const Subtitle &s, const std::filesystem:
 	commands.push_back(command.str());
 }
 
-void GenerateImage(const Cli &cli, const Subtitle &s, const std::filesystem::path &media_path, size_t seq)
+void GenerateImage(const Cli& cli, const Subtitle& s, const std::filesystem::path& media_path, size_t seq)
 {
 	// ffmpeg -ss 0:0:3.227 -i 01.mkv -vframes 1 01.webp
 	std::ostringstream command;
@@ -172,7 +169,7 @@ void GenerateImage(const Cli &cli, const Subtitle &s, const std::filesystem::pat
 	commands.push_back(command.str());
 }
 
-void WriteToOutputTSV(const Cli &cli, const Subtitle &s, std::ofstream &tsv_file, size_t seq)
+void WriteToOutputTSV(const Cli& cli, const Subtitle& s, std::ofstream& tsv_file, size_t seq)
 {
 	if (cli.dry_run)
 	{
@@ -193,7 +190,8 @@ void RunInParallel(size_t num_threads)
 {
 	std::atomic_size_t index{0};
 
-	auto worker = [&] {
+	auto worker = [&]
+	{
 		while (true)
 		{
 			size_t i = index.fetch_add(1);
@@ -216,10 +214,8 @@ void RunInParallel(size_t num_threads)
 		threads.emplace_back(worker);
 	}
 
-	for (auto &th : threads)
+	for (auto& th : threads)
 	{
 		th.join();
 	}
 }
-
-} // namespace s2s

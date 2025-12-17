@@ -2,13 +2,13 @@
 
 #include <string>
 
-namespace s2s
-{
-
 struct Subtitle
 {
-	Subtitle(unsigned int idx, const std::string &s, const std::string &e, const std::string &t)
-	    : index(idx), start(s), end(e), text(t)
+	Subtitle(unsigned int idx, const std::string& s, const std::string& e, const std::string& t)
+	    : index(idx),
+	      start(s),
+	      end(e),
+	      text(t)
 	{
 	}
 
@@ -17,5 +17,3 @@ struct Subtitle
 	std::string end;
 	std::string text;
 };
-
-} // namespace s2s

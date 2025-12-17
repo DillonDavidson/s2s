@@ -94,7 +94,7 @@ std::vector<Fields> LoadDefaultConfig()
 	return {};
 }
 
-Fields DetermineField(const std::string &field)
+Fields DetermineField(const std::string& field)
 {
 	if (field == "expression")
 	{
@@ -126,6 +126,6 @@ Fields DetermineField(const std::string &field)
 
 std::filesystem::path GetConfigFilePath()
 {
-	const char *home = std::getenv("HOME");
+	const char* home = std::getenv("HOME");
 	return std::filesystem::path(home) / CONFIG_FILE_PATH;
 }

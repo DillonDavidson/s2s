@@ -3,9 +3,6 @@
 #include <filesystem>
 #include <string>
 
-namespace s2s
-{
-
 constexpr std::string_view USAGE = "Options:\n"
                                    "    -s, --subtitle <file>     Path to subtitle file in target language\n"
                                    "    -v, --video <file>        Path to video file used for audio clips\n"
@@ -28,7 +25,5 @@ struct Cli
 	int error_code = 0;                     // Error code, if any
 };
 
-Cli Parse(int argc, char *argv[]);
+Cli Parse(int argc, char* argv[]);
 void Usage();
-
-} // namespace s2s

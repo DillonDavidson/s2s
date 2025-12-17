@@ -2,11 +2,9 @@
 #include "ffmpeg.hpp"
 #include "srt.hpp"
 
-using namespace s2s;
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	s2s::Cli cli = s2s::Parse(argc, argv);
+	Cli cli = Parse(argc, argv);
 
 	if (cli.error_code != 0)
 	{

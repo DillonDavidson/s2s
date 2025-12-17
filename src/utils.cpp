@@ -1,9 +1,6 @@
 #include "utils.hpp"
 
-namespace s2s
-{
-
-std::string Quote(const std::string &s)
+std::string Quote(const std::string& s)
 {
 	return "\"" + s + "\"";
 }
@@ -23,9 +20,7 @@ std::string FormatThreeDigits(size_t n)
 	return "00" + std::to_string(n);
 }
 
-std::string BuildOutputPath(const std::string &media, const std::string &deck, int seq, const std::string &ext)
+std::string BuildOutputPath(const std::string& media, const std::string& deck, int seq, const std::string& ext)
 {
 	return Quote(media + "/" + deck + "_" + FormatThreeDigits(seq) + ext);
 }
-
-} // namespace s2s

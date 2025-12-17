@@ -6,10 +6,7 @@
 #include <string_view>
 #include <vector>
 
-namespace s2s
-{
-
-Cli Parse(int argc, char *argv[])
+Cli Parse(int argc, char* argv[])
 {
 	const std::vector<std::string_view> args(argv + 1, argv + argc);
 
@@ -195,5 +192,3 @@ void Usage()
 	std::cout << "Usage: s2s [OPTIONS]\n\n";
 	std::cout << USAGE;
 }
-
-} // namespace s2s

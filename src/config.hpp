@@ -20,5 +20,5 @@ enum Fields
 std::vector<Fields> LoadConfig();
 std::vector<Fields> LoadUserConfig();
 std::vector<Fields> LoadDefaultConfig();
-Fields DetermineField(const std::string &field);
+Fields DetermineField(const std::string& field);
 std::filesystem::path GetConfigFilePath();

@@ -3,9 +3,6 @@
 #include <filesystem>
 #include <string_view>
 
-namespace s2s
-{
-
 inline constexpr int MY_BEST_GUESS = 100;
 inline constexpr std::string_view ARROW = "-->";
 
@@ -31,5 +28,3 @@ inline constexpr std::string_view OGG = ".ogg";
 inline constexpr std::string_view WEBP = ".webp";
 inline constexpr std::string_view TSV = ".tsv";
 inline constexpr std::string_view RM = "rm ";
-
-} // namespace s2s

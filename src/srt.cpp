@@ -7,10 +7,7 @@
 #include "constants.hpp"
 #include "subtitle.hpp"
 
-namespace s2s
-{
-
-std::vector<Subtitle> ParseSRTFile(const std::filesystem::path &path)
+std::vector<Subtitle> ParseSRTFile(const std::filesystem::path& path)
 {
 	std::vector<Subtitle> subs;
 	std::string line, text, start, end;
@@ -67,5 +64,3 @@ std::vector<Subtitle> ParseSRTFile(const std::filesystem::path &path)
 
 	return subs;
 }
-
-} // namespace s2s
