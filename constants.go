@@ -4,21 +4,26 @@ const Arrow = "-->"
 
 // FFmpeg commands
 const (
-	FFmpeg       = "ffmpeg "
-	Input        = " -i "
-	DisableVideo = " -vn "
-	VorbisEncode = " -acodec libvorbis "
-	Start        = " -ss "
-	End          = " -to "
-	Copy         = " -c copy "
-	Image        = " -vframes 1 "
-	Scale        = " -vf \"scale=352:202\" "
+	FFmpeg          = "ffmpeg"
+	Input           = "-i"
+	DisableVideo    = "-vn"
+	VorbisEncodeOne = "-acodec"
+	VorbisEncodeTwo = "libvorbis"
+	Start           = "-ss"
+	End             = "-to"
+	CopyOne         = "-c"
+	CopyTwo         = "copy"
+	ImageOne        = "-vframes"
+	ImageTwo        = "1"
+	ScaleOne        = "-vf"
+	ScaleTwo        = "scale=352:202"
 )
 
 // Quiet output
 const (
-	Quiet        = " -hide_banner -loglevel error "
-	ShellBeQuiet = " > /dev/null 2>&1 "
+	QuietOne   = "-hide_banner"
+	QuietTwo   = "-loglevel"
+	QuietThree = "error"
 )
 
 // File stuff
@@ -28,5 +33,5 @@ const (
 	Ogg               = ".ogg"
 	Webp              = ".webp"
 	Tsv               = ".tsv"
-	Rm                = "rm "
+	Rm                = "rm"
 )

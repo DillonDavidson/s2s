@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 )
 
@@ -19,8 +18,8 @@ func main() {
 		log.Fatal("no subtitles read")
 	}
 
-	fmt.Println("Subtitle File:    " + cli.subtitleFile)
-	fmt.Println("Video File:       " + cli.videoFile)
-	fmt.Println("Deck Name:        " + cli.deckName)
-	fmt.Println("Output Directory: " + cli.outputDirectory)
+	err = CreateAnkiDeck(cli, subtitles)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

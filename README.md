@@ -17,8 +17,6 @@
 ## Requirements
 
 - [FFmpeg](https://ffmpeg.org/) must be installed and available in your PATH
-- A C++ compiler (I like Clang++)
-- Meson + Ninja build system
 
 ---
 
@@ -27,9 +25,8 @@
 ```bash
 git clone https://github.com/DillonDavidson/s2s
 cd s2s
-meson setup build
-ninja -C build
-./build/s2s # commands
+go build
+./s2s # commands
 ```
 
 ---
@@ -38,12 +35,22 @@ ninja -C build
 
 ```text
 Options:
-    -s, --subtitle <file>     Path to subtitle file in target language
-    -v, --video <file>        Path to video file used for audio clips
-    -o, --output <directory>  Directory to place generated files
-    -n, --name <string>       Name of generated Anki deck
-    -t, --threads <num>       Number of threads to use (default: 1)
-    -h, --help                Show this help message and exit
+  -dry-run
+        show what commands will run without running them
+  -help
+        show help
+  -name string
+        name of generated Anki deck
+  -output string
+        directory to place generated files
+  -subtitle string
+        path to subtitle file in target language
+  -threads int
+        number of threads to use (default 1)
+  -verbose
+        show detailed FFmpeg output and other debug info
+  -video string
+        path to video file used for audio/video clips and images
 ```
 
 ---
@@ -51,8 +58,18 @@ Options:
 ## Example
 
 ```bash
-./build/s2s -s sub.srt -v vid.mkv -n my_deck -o ./my_vids/
+./s2s -subtitle sub.srt -video vid.mkv -output ./videos -name my_deck
 ```
+
+---
+
+## To-Do List
+
+- [ ] Support for a configuration file
+- [ ] Customizable gap before and after subtitle times
+- [ ] Customizable file types
+- [ ] Generating video clips
+- [ ] Customizable snapshot dimensions 
 
 ---
 
