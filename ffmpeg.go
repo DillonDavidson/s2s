@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 var commands [][]string
@@ -73,23 +74,48 @@ func GenerateImage(cli Cli, s Subtitle, mediaPath string, seq int) {
 	commands = append(commands, command)
 }
 
-func WriteToOutputTSV(cli Cli, s Subtitle, tsvFile *os.File, seq int) {
+func WriteToOutputTSV(cli Cli, s Subtitle, tsvFile *os.File, seq int, fields []AnkiField) {
 	if cli.dryRun {
 		return
 	}
 
 	formatSeq := fmt.Sprintf("%03d", seq)
-	fmt.Fprintf(tsvFile, "%s\t%s\t[sound:%s_%s%s]\t<img src=\"%s_%s%s\">\t%s\n",
-		cli.deckName,
-		formatSeq,
-		cli.deckName,
-		formatSeq,
-		Ogg,
-		cli.deckName,
-		formatSeq,
-		Webp,
-		s.text,
-	)
+
+	var b strings.Builder
+	for _, f := range fields {
+		fmt.Println("f = ", f)
+		switch f {
+		case Expression:
+			b.WriteString(s.text)
+			b.WriteByte('\t')
+		case SequenceNumber:
+			b.WriteString(formatSeq)
+			b.WriteByte('\t')
+		case Audio:
+			b.WriteString("[sound:")
+			b.WriteString(cli.deckName)
+			b.WriteByte('_')
+			b.WriteString(formatSeq)
+			b.WriteString(Ogg)
+			b.WriteString("]\t")
+		case Snapshot:
+			b.WriteString(`<img src="`)
+			b.WriteString(cli.deckName)
+			b.WriteByte('_')
+			b.WriteString(formatSeq)
+			b.WriteString(Webp)
+			b.WriteString(`">	`)
+		case Tags:
+			b.WriteString(cli.deckName)
+			b.WriteByte('\t')
+		case IDK:
+			b.WriteByte('\t')
+		}
+	}
+
+	line := b.String() + "\n"
+
+	fmt.Fprint(tsvFile, line)
 }
 
 func CreateAnkiDeck(cli Cli, subtitles []Subtitle) error {
@@ -130,7 +156,8 @@ func CreateAnkiDeck(cli Cli, subtitles []Subtitle) error {
 			cli.deckName+Tsv,
 		)
 
-		tsvFile, err := os.Create(tsvPath)
+		var err error
+		tsvFile, err = os.Create(tsvPath)
 		if err != nil {
 			return err
 		}
@@ -150,20 +177,30 @@ func CreateAnkiDeck(cli Cli, subtitles []Subtitle) error {
 		return errors.New("error: '" + DefaultOutputFile + "' doesn't exist and not a dry run")
 	}
 
+	fields, err := LoadConfig()
+	if err != nil {
+		panic(err)
+	}
+
+	if len(fields) == 0 {
+		panic(errors.New("error it is empty"))
+	}
+
 	for i := range subtitles {
 		// ffmpeg -i audio.ogg -ss START -to END -c copy
 		// <deck_name>_<sequence_number>.ogg
 		GenerateAudioClip(cli, subtitles[i], mediaPath, i+1)
 
-		// make image
-		GenerateImage(cli, subtitles[i], mediaPath, i+1)
+		GenerateImage(cli, subtitles[i], mediaPath, i+1) // make image
 
-		// write to tsv file
-		WriteToOutputTSV(cli, subtitles[i], tsvFile, i+1)
+		fmt.Println("writing")
+		WriteToOutputTSV(cli, subtitles[i], tsvFile, i+1, fields) // write to tsv file
+		fmt.Println("wrote")
 	}
 
 	for _, args := range commands {
 		cmd := exec.Command(args[0], args[1:]...)
+		// fmt.Println(cmd)
 		if cli.dryRun {
 			fmt.Println(cmd)
 		} else {

@@ -35,3 +35,22 @@ const (
 	Tsv               = ".tsv"
 	Rm                = "rm"
 )
+
+// Config stuff
+const (
+	Order      = "order"
+	Config     = ".config"
+	S2S        = "s2s"
+	ConfigToml = "config.toml"
+)
+
+type AnkiField int
+
+const (
+	Expression AnkiField = iota
+	SequenceNumber
+	Audio
+	Snapshot
+	Tags
+	IDK
+)
