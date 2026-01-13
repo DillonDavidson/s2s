@@ -83,7 +83,6 @@ func WriteToOutputTSV(cli Cli, s Subtitle, tsvFile *os.File, seq int, fields []A
 
 	var b strings.Builder
 	for _, f := range fields {
-		fmt.Println("f = ", f)
 		switch f {
 		case Expression:
 			b.WriteString(s.text)
@@ -193,14 +192,11 @@ func CreateAnkiDeck(cli Cli, subtitles []Subtitle) error {
 
 		GenerateImage(cli, subtitles[i], mediaPath, i+1) // make image
 
-		fmt.Println("writing")
 		WriteToOutputTSV(cli, subtitles[i], tsvFile, i+1, fields) // write to tsv file
-		fmt.Println("wrote")
 	}
 
 	for _, args := range commands {
 		cmd := exec.Command(args[0], args[1:]...)
-		// fmt.Println(cmd)
 		if cli.dryRun {
 			fmt.Println(cmd)
 		} else {
