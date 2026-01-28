@@ -75,4 +75,4 @@ Options:
 
 ## License
 
-s2s is licensed under the GNU GPL Version 3 license. [See LICENSE for more information.](https://github.com/DillonDavidson/s2s/blob/main/LICENSE)
+s2s is licensed under the GNU GPL Version 3 license. See [LICENSE](https://github.com/DillonDavidson/s2s/blob/master/LICENSE) for more information.
