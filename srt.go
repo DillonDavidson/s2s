@@ -26,6 +26,8 @@ func ParseSRTFile(subtitleFile string) ([]Subtitle, error) {
 
 		if len(line) != 0 {
 			if part == 0 {
+				line = strings.TrimPrefix(line, "\uFEFF")
+
 				index, err = strconv.Atoi(line)
 				if err != nil {
 					return subs, err

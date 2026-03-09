@@ -35,6 +35,8 @@ go build
 
 ```text
 Options:
+  -batch
+        process all matching video+subtitle pairs in cwd
   -dry-run
         show what commands will run without running them
   -help
@@ -63,7 +65,7 @@ Options:
 
 ---
 
-## To-Do List
+## Future Plans
 
 - [ ] Support for a configuration file
 - [ ] Customizable gap before and after subtitle times

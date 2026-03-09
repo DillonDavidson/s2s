@@ -2,12 +2,20 @@ package main
 
 import (
 	"log"
+	"os"
 )
 
 func main() {
 	cli, err := Parse()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if cli.batch {
+		if err := DoBatch(cli); err != nil {
+			log.Fatal(err)
+		}
+		os.Exit(0)
 	}
 
 	subtitles, err := ParseSRTFile(cli.subtitleFile)

@@ -118,6 +118,8 @@ func WriteToOutputTSV(cli Cli, s Subtitle, tsvFile *os.File, seq int, fields []A
 }
 
 func CreateAnkiDeck(cli Cli, subtitles []Subtitle) error {
+	commands = [][]string{}
+
 	if fileExists(DefaultOutputFile) {
 		return errors.New("error: " + DefaultOutputFile + " already exists, delete it and try again")
 	}
