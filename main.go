@@ -18,7 +18,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	subtitles, err := ParseSRTFile(cli.subtitleFile)
+	subtitles, err := ParseSubtitleFile(cli.subtitleFile)
 	if err != nil {
 		log.Fatal(err)
 	}
